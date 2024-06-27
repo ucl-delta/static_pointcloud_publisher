@@ -1,0 +1,3 @@
+[submodule "external/liblas"]
+	path = external/liblas
+	url = https://github.com/libLAS/libLAS.git
