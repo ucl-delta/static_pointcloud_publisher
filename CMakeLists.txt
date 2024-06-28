@@ -10,6 +10,7 @@ find_package(ament_cmake REQUIRED)
 # uncomment the following section in order to fill in
 # further dependencies manually.
 find_package(rclcpp REQUIRED)
+find_package(sensor_msgs REQUIRED)
 
 # Add submodule
 set(LIBLAS_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/liblas)
@@ -21,7 +22,7 @@ include_directories(
 
 add_executable(static_pointcloud_publisher src/static_pointcloud_publisher.cpp)
 target_link_libraries(static_pointcloud_publisher las)
-ament_target_dependencies(static_pointcloud_publisher rclcpp)
+ament_target_dependencies(static_pointcloud_publisher rclcpp sensor_msgs)
 
 if(BUILD_TESTING)
   find_package(ament_lint_auto REQUIRED)
