@@ -10,6 +10,7 @@ public:
         this->declare_parameter<std::string>("frame_id", "world");
         this->declare_parameter<std::string>("las_file_path", "");
         
+        this->get_parameter("frame_id", frame_id);
         this->get_parameter("las_file_path", las_file_path_);
         this->read_in_file(las_file_path_);
 
@@ -38,7 +39,7 @@ private:
         // sensor_msgs::msg::PointCloud2 pointcloud_msg;
         this->pointcloud_msg = std::make_shared<sensor_msgs::msg::PointCloud2>();
         this->pointcloud_msg->header.stamp = this->now();
-        this->pointcloud_msg->header.frame_id = "map"; // Adjust the frame as necessary
+        this->pointcloud_msg->header.frame_id = frame_id; // Adjust the frame as necessary
         this->pointcloud_msg->height = 1;
         this->pointcloud_msg->is_dense = false;
 
@@ -79,9 +80,12 @@ private:
             float x = p.GetX();
             float y = p.GetY();
             float z = p.GetZ();
-            uint32_t rgb = (static_cast<uint32_t>(p.GetColor().GetBlue()) << 16) |
-                           (static_cast<uint32_t>(p.GetColor().GetGreen()) << 8) |
-                           (static_cast<uint32_t>(p.GetColor().GetRed()));
+            uint8_t r = p.GetColor().GetRed() >> 8;
+            uint8_t g = p.GetColor().GetGreen() >> 8;
+            uint8_t b = p.GetColor().GetBlue() >> 8;
+            uint32_t rgb = (static_cast<uint32_t>(r) << 16) |
+                           (static_cast<uint32_t>(g) << 8) |
+                           (static_cast<uint32_t>(b));
             float rgb_float;
             std::memcpy(&rgb_float, &rgb, sizeof(uint32_t));
             
@@ -107,7 +111,8 @@ private:
         }
         num_publishers = curr_num_publishers;
     }
-    
+
+    std::string frame_id;
     uint8_t num_publishers = 0;
     std::string las_file_path_;
     rclcpp::Publisher<sensor_msgs::msg::PointCloud2>::SharedPtr publisher_;
