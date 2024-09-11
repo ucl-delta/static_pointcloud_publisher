@@ -7,7 +7,7 @@ class PointCloudReader : public rclcpp::Node {
 public:
     PointCloudReader() : Node("pointcloud_reader") {
         // Declare and get the parameter for LAS file path
-        this->declare_parameter<std::string>("frame_id", "world");
+        this->declare_parameter<std::string>("frame_id", "base_frame");
         this->declare_parameter<std::string>("las_file_path", "");
         
         this->get_parameter("frame_id", frame_id);
