@@ -2,6 +2,12 @@
 
 ## Installation
 
+```
+git clone --recursive git@github.com:ucl-delta/static_pointcloud_publisher.git
+```
+
+Need to be recursive for liblas to be pulled and built
+
 ### Liblas
 
 https://liblas.org/compilation.html#compilation
